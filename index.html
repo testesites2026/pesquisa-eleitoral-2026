@@ -775,8 +775,8 @@ header{position:sticky;top:0;z-index:30;background:rgba(14,14,17,.88);backdrop-f
 <div class="overlay" id="overlay"></div>
 <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitulo">
   <div class="alca"></div>
-  <h2 id="sheetTitulo">Compartilhe sua escolha 🇧🇷</h2><div style="text-align:center;font-size:10px;color:var(--muted);margin-top:-6px;margin-bottom:5px">Molduras 2026 · versão nova</div>
-  <p class="subshare">Agora sua foto entra dentro da moldura personalizada do candidato escolhido.</p>
+  <h2 id="sheetTitulo">Compartilhe sua escolha 🇧🇷</h2><div style="text-align:center;font-size:10px;color:var(--muted);margin-top:-6px;margin-bottom:5px">Molduras 2026 · versão leve ajustada</div>
+  <p class="subshare">Agora sua foto entra na moldura personalizada do candidato escolhido, pronta para compartilhar.</p>
 
   <div class="share-grid">
     <button class="sbtn wa" id="btnWhats">
@@ -803,14 +803,9 @@ header{position:sticky;top:0;z-index:30;background:rgba(14,14,17,.88);backdrop-f
       <button class="clearpic" id="btnLimparFoto" type="button">Limpar</button>
     </div>
     <div class="filehint" id="fotoNome">Nenhuma foto selecionada.</div>
-    <div class="filehint">Sua foto vai aparecer ao lado do candidato no card.</div>
+    <div class="filehint">Sua foto será encaixada automaticamente dentro da moldura.</div>
+    <div class="filehint">A moldura será gerada limpa, sem frases prontas.</div>
 
-    <div class="story-opts" id="storyOpts">
-      <button class="story-chip on" data-slogan="Já decidi meu voto">Já decidi meu voto</button>
-      <button class="story-chip" data-slogan="Meu voto já está escolhido">Meu voto já está escolhido</button>
-      <button class="story-chip" data-slogan="Eu já sei em quem votar">Eu já sei em quem votar</button>
-      <button class="story-chip" data-slogan="Pronto para votar em 2026">Pronto para votar em 2026</button>
-    </div>
 
     <div class="story-actions">
       <button class="btn btn-pri" id="btnGerarStory">Gerar card</button>
@@ -1322,7 +1317,7 @@ tick(); setInterval(tick, 1000);
 /* ---------- COMPARTILHAR ---------- */
 let blobAtual = null;
 let fotoPessoaData = null;
-let sloganAtual = "Já decidi meu voto";
+let sloganAtual = "";
 
 const CORES_CANDIDATO = {
   "13": ["#c62828","#ef5350"],
@@ -1354,7 +1349,7 @@ function textoShare(){
   if(ultimoVoto?.tipo === "cand"){
     return `Já escolhi meu voto para ${ultimoVoto.c.nome} nas Eleições 2026 🇧🇷. Veja e participe também: ${location.href}`;
   }
-  return "Já decidi meu voto nas Eleições 2026 🇧🇷. Veja e participe também: " + location.href;
+  return "Participei da Pesquisa Eleitoral 2026 🇧🇷. Veja e participe também: " + location.href;
 }
 
 function carregarImg(src){
@@ -1374,6 +1369,8 @@ async function gerarImagemGenerica(voto, usarFotoPessoa = false){
   const W = 1080, H = 1920, cv = document.createElement("canvas");
   cv.width = W; cv.height = H;
   const x = cv.getContext("2d");
+  x.imageSmoothingEnabled = true;
+  x.imageSmoothingQuality = "high";
 
   const [c1, c2] = coresDoVoto(voto);
 
@@ -1597,7 +1594,7 @@ async function gerarImagemGenerica(voto, usarFotoPessoa = false){
   rr(x, 578, 1708, 324, 42, 16); x.fillStyle = "rgba(255,255,255,.06)"; x.fill();
   x.fillStyle = "#fff"; x.fillText("Convide e compartilhe", 612, 1735);
 
-  return new Promise(r => cv.toBlob(r, "image/png"));
+  return new Promise(r => cv.toBlob(r, "image/jpeg", 0.88));
 }
 
 
@@ -1611,12 +1608,12 @@ function desenharCover(ctx, img, x, y, w, h){
 function getTemplateCompartilhar(voto){
   if(voto?.tipo !== "cand") return "";
   return ({
-    "13": "./lula_13.png?v=20260928c",
-    "22": "./flavio_22.png?v=20260928c",
-    "30": "./zema_30.png?v=20260928c",
-    "55": "./caiado_55.png?v=20260928c",
-    "70": "./augusto_70.png?v=20260928c",
-    "14": "./renan_14.png?v=20260928c"
+    "13": "./lula_13.webp?v=20260928d",
+    "22": "./flavio_22.webp?v=20260928d",
+    "30": "./zema_30.webp?v=20260928d",
+    "55": "./caiado_55.webp?v=20260928d",
+    "70": "./augusto_70.webp?v=20260928d",
+    "14": "./renan_14.webp?v=20260928d"
   })[voto.c.numero] || "";
 }
 
@@ -1628,6 +1625,8 @@ async function gerarImagem(voto, usarFotoPessoa = false){
   const cv = document.createElement("canvas");
   cv.width = W; cv.height = H;
   const x = cv.getContext("2d");
+  x.imageSmoothingEnabled = true;
+  x.imageSmoothingQuality = "high";
 
   const template = await carregarImg(templatePath);
   if(!template) return gerarImagemGenerica(voto, usarFotoPessoa);
@@ -1658,7 +1657,7 @@ async function gerarImagem(voto, usarFotoPessoa = false){
   }
 
   // Área da foto do usuário dentro da moldura
-  const fotoX = 130, fotoY = 350, fotoW = 720, fotoH = 720, fotoR = 34;
+  const fotoX = 146, fotoY = 336, fotoW = 592, fotoH = 628, fotoR = 30;
   if(usarFotoPessoa && fotoPessoaData){
     const imgP = await carregarImg(fotoPessoaData);
     if(imgP){
@@ -1691,7 +1690,7 @@ async function gerarImagem(voto, usarFotoPessoa = false){
   x.textAlign = "left";
   x.textBaseline = "alphabetic";
 
-  return new Promise(r => cv.toBlob(r, "image/png"));
+  return new Promise(r => cv.toBlob(r, "image/jpeg", 0.88));
 }
 
 async function atualizarPreviewStory(){
@@ -1731,7 +1730,7 @@ $("#btnShare").onclick = async () => {
   try{
     if(!blobAtual) await atualizarPreviewStory();
     if(blobAtual){
-      const file = new File([blobAtual], "story-urna-2026.png", { type:"image/png" });
+      const file = new File([blobAtual], "story-urna-2026.jpg", { type:"image/jpeg" });
       if(navigator.canShare && navigator.canShare({ files:[file] })){
         await navigator.share({ files:[file], text:textoShare() });
         return;
@@ -1745,7 +1744,7 @@ $("#btnBaixar").onclick = () => {
   if(!blobAtual) return;
   const a = document.createElement("a");
   a.href = URL.createObjectURL(blobAtual);
-  a.download = "story-urna-2026.png";
+  a.download = "story-urna-2026.jpg";
   document.body.appendChild(a); a.click(); a.remove();
   mostrarToast("Imagem salva!");
 };
@@ -1768,7 +1767,7 @@ $("#btnInstagram").onclick = async () => {
   try{
     if(!blobAtual) await atualizarPreviewStory();
     if(blobAtual){
-      const file = new File([blobAtual], "story-urna-2026.png", { type:"image/png" });
+      const file = new File([blobAtual], "story-urna-2026.jpg", { type:"image/jpeg" });
       if(navigator.canShare && navigator.canShare({ files:[file] })){
         await navigator.share({ files:[file], text:"Card pronto para postar no Instagram" });
         return;
@@ -1804,7 +1803,7 @@ document.querySelectorAll(".story-chip").forEach(btn => {
   btn.onclick = async () => {
     document.querySelectorAll(".story-chip").forEach(x => x.classList.remove("on"));
     btn.classList.add("on");
-    sloganAtual = btn.dataset.slogan || "Já decidi meu voto";
+    sloganAtual = btn.dataset.slogan || "";
     await atualizarPreviewStory();
   };
 });
