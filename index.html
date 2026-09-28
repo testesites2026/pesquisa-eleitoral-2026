@@ -1647,8 +1647,24 @@ async function gerarImagem(voto, usarFotoPessoa = false){
   if(usarMolduraOverlay && fotoPessoaData){
     const imgP = await carregarImg(fotoPessoaData);
     if(imgP){
-      // Foto maior e posicionada para preencher toda a área útil da moldura.
-      const fotoX = 104, fotoY = 318, fotoW = 740, fotoH = 842;
+      // A área da foto foi desenhada originalmente no tamanho nativo do template.
+      // Como o card final é renderizado em 1080x1920, escalamos a moldura para evitar
+      // faixas pretas/sobras laterais em telas mobile.
+      const baseW = template.naturalWidth || template.width || 941;
+      const baseH = template.naturalHeight || template.height || 1672;
+      const sx = W / baseW;
+      const sy = H / baseH;
+
+      // Coordenadas da área branca no template original.
+      const slotX = 104, slotY = 318, slotW = 740, slotH = 842;
+
+      // Pequena sobra extra para garantir preenchimento total, sem deixar faixas vazias.
+      const bleed = 8;
+      const fotoX = Math.round(slotX * sx) - bleed;
+      const fotoY = Math.round(slotY * sy) - bleed;
+      const fotoW = Math.round(slotW * sx) + bleed * 2;
+      const fotoH = Math.round(slotH * sy) + bleed * 2;
+
       desenharCover(x, imgP, fotoX, fotoY, fotoW, fotoH);
     }
   }
