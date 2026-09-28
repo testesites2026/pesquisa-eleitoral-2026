@@ -1608,18 +1608,30 @@ function desenharCover(ctx, img, x, y, w, h){
 function getTemplateCompartilhar(voto){
   if(voto?.tipo !== "cand") return "";
   return ({
-    "13": "./lula_13.webp?v=20260928e",
-    "22": "./flavio_22.webp?v=20260928e",
-    "30": "./zema_30.webp?v=20260928e",
-    "55": "./caiado_55.webp?v=20260928e",
-    "70": "./augusto_70.webp?v=20260928e",
-    "14": "./renan_14.webp?v=20260928e"
+    "13": "./lula_13.webp?v=20260928f",
+    "22": "./flavio_22.webp?v=20260928f",
+    "30": "./zema_30.webp?v=20260928f",
+    "55": "./caiado_55.webp?v=20260928f",
+    "70": "./augusto_70.webp?v=20260928f",
+    "14": "./renan_14.webp?v=20260928f"
+  })[voto.c.numero] || "";
+}
+function getTemplateCompartilharOverlay(voto){
+  if(voto?.tipo !== "cand") return "";
+  return ({
+    "13": "./lula_13_overlay.webp?v=20260928f",
+    "22": "./flavio_22_overlay.webp?v=20260928f",
+    "30": "./zema_30_overlay.webp?v=20260928f",
+    "55": "./caiado_55_overlay.webp?v=20260928f",
+    "70": "./augusto_70_overlay.webp?v=20260928f",
+    "14": "./renan_14_overlay.webp?v=20260928f"
   })[voto.c.numero] || "";
 }
 
 async function gerarImagem(voto, usarFotoPessoa = false){
-  const templatePath = getTemplateCompartilhar(voto);
-  if(!templatePath) return gerarImagemGenerica(voto, usarFotoPessoa);
+  const baseTemplatePath = getTemplateCompartilhar(voto);
+  const overlayTemplatePath = getTemplateCompartilharOverlay(voto);
+  if(!baseTemplatePath) return gerarImagemGenerica(voto, usarFotoPessoa);
 
   const W = 1080, H = 1920;
   const cv = document.createElement("canvas");
@@ -1628,12 +1640,22 @@ async function gerarImagem(voto, usarFotoPessoa = false){
   x.imageSmoothingEnabled = true;
   x.imageSmoothingQuality = "high";
 
-  const template = await carregarImg(templatePath);
+  const usarMolduraOverlay = !!(usarFotoPessoa && fotoPessoaData && overlayTemplatePath);
+  const template = await carregarImg(usarMolduraOverlay ? overlayTemplatePath : baseTemplatePath);
   if(!template) return gerarImagemGenerica(voto, usarFotoPessoa);
 
+  if(usarMolduraOverlay && fotoPessoaData){
+    const imgP = await carregarImg(fotoPessoaData);
+    if(imgP){
+      // Foto maior e posicionada para preencher toda a área útil da moldura.
+      const fotoX = 104, fotoY = 318, fotoW = 740, fotoH = 842;
+      desenharCover(x, imgP, fotoX, fotoY, fotoW, fotoH);
+    }
+  }
+
+  // A moldura overlay fica por cima e mantém o candidato + elementos gráficos intactos.
   x.drawImage(template, 0, 0, W, H);
 
-  // Faixa opcional com o slogan escolhido
   if(sloganAtual){
     const faixaX = 122, faixaY = 262, faixaW = 836, faixaH = 66;
     rr(x, faixaX, faixaY, faixaW, faixaH, 24);
@@ -1656,29 +1678,6 @@ async function gerarImagem(voto, usarFotoPessoa = false){
     x.textBaseline = "alphabetic";
   }
 
-  // Área da foto do usuário dentro da moldura
-  const fotoX = 128, fotoY = 320, fotoW = 610, fotoH = 650, fotoR = 28;
-  if(usarFotoPessoa && fotoPessoaData){
-    const imgP = await carregarImg(fotoPessoaData);
-    if(imgP){
-      x.save();
-      rr(x, fotoX, fotoY, fotoW, fotoH, fotoR);
-      x.clip();
-      desenharCover(x, imgP, fotoX, fotoY, fotoW, fotoH);
-      x.restore();
-
-      x.save();
-      rr(x, fotoX, fotoY, fotoW, fotoH, fotoR);
-      x.strokeStyle = "rgba(255,255,255,.35)";
-      x.lineWidth = 2;
-      x.setLineDash([10,10]);
-      x.stroke();
-      x.setLineDash([]);
-      x.restore();
-    }
-  }
-
-  // Rodapé discreto com o site, para incentivar compartilhamento
   rr(x, 135, 1804, 810, 62, 22);
   x.fillStyle = "rgba(0,0,0,.42)";
   x.fill();
@@ -1690,7 +1689,7 @@ async function gerarImagem(voto, usarFotoPessoa = false){
   x.textAlign = "left";
   x.textBaseline = "alphabetic";
 
-  return new Promise(r => cv.toBlob(r, "image/jpeg", 0.88));
+  return new Promise(r => cv.toBlob(r, "image/jpeg", 0.86));
 }
 
 async function atualizarPreviewStory(){
