@@ -211,6 +211,67 @@ header{position:sticky;top:0;z-index:30;background:rgba(14,14,17,.88);backdrop-f
 }
 
 
+
+/* ===== Apuração dos votos ===== */
+.ap-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:14px}
+.ap-head h2{font-size:18px;font-weight:800;letter-spacing:-.01em}
+.ap-head .sub{font-size:12px;color:var(--muted);margin-top:3px}
+.ap-chip-live{
+  display:inline-flex;align-items:center;gap:5px;flex:none;
+  font-size:10px;font-weight:700;color:var(--accent-hi);
+  background:rgba(245,184,61,.12);border:1px solid rgba(245,184,61,.35);
+  padding:5px 10px;border-radius:999px;white-space:nowrap
+}
+.ap-chip-live i{width:6px;height:6px;border-radius:50%;background:var(--accent-hi);animation:pulso 1.4s infinite}
+.ap-stats{
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-bottom:14px
+}
+.ap-stat{
+  background:linear-gradient(180deg,var(--card2),var(--card));
+  border:1px solid var(--line);border-radius:14px;padding:12px 10px;text-align:center
+}
+.ap-stat .ic{
+  width:28px;height:28px;border-radius:9px;margin:0 auto 8px;
+  display:grid;place-items:center;font-size:14px
+}
+.ap-stat .ic.t{background:rgba(245,184,61,.12);border:1px solid rgba(245,184,61,.3)}
+.ap-stat .ic.l{background:rgba(224,176,74,.14);border:1px solid rgba(224,176,74,.4)}
+.ap-stat .ic.b{background:rgba(96,165,250,.12);border:1px solid rgba(96,165,250,.3)}
+.ap-stat .val{font-family:var(--mono);font-weight:800;font-size:18px;line-height:1.1}
+.ap-stat .lbl{font-size:10px;color:var(--muted);font-weight:700;margin-top:4px;text-transform:uppercase;letter-spacing:.04em}
+.ap-stat .subv{font-size:11px;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ap-list-card{
+  background:linear-gradient(180deg,var(--card2),var(--card));
+  border:1px solid var(--line);border-radius:16px;padding:14px
+}
+.ap-list-card .label{margin-bottom:12px}
+.ap-row{
+  display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;
+  padding:10px 0;border-bottom:1px solid var(--line)
+}
+.ap-row:last-child{border-bottom:0;padding-bottom:0}
+.ap-row:first-of-type{padding-top:0}
+.ap-row .nb{
+  font-family:var(--mono);font-weight:800;font-size:12px;color:var(--accent-hi);
+  border:1px solid rgba(245,184,61,.4);background:rgba(245,184,61,.08);
+  padding:3px 7px;border-radius:8px;min-width:36px;text-align:center
+}
+.ap-row .info{min-width:0}
+.ap-row .nm{font-weight:800;font-size:13px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ap-row .pt{font-size:11px;color:var(--muted);margin-top:1px}
+.ap-row .bar{height:6px;border-radius:9px;background:#27272e;overflow:hidden;margin-top:6px}
+.ap-row .bar i{display:block;height:100%;border-radius:9px;background:linear-gradient(90deg,var(--accent-dk),var(--accent-hi));transition:width .5s}
+.ap-row.lider .bar i{background:linear-gradient(90deg,#b8862e,var(--gold))}
+.ap-row .nums{text-align:right;font-family:var(--mono);flex:none}
+.ap-row .nums b{display:block;font-size:15px;font-weight:800}
+.ap-row .nums span{font-size:11px;color:var(--muted)}
+.ap-badge-lider{
+  display:inline-flex;align-items:center;gap:3px;margin-left:6px;
+  font-size:9px;font-weight:900;color:#2b1c00;background:linear-gradient(180deg,#ffd57a,#e0b04a);
+  padding:2px 6px;border-radius:999px;vertical-align:middle
+}
+.ap-empty{text-align:center;color:var(--muted);padding:28px 12px;font-size:14px}
+
 /* ===== Top 3 AO VIVO (votos reais) — sempre lado a lado ===== */
 .live-top3{
   margin-bottom:14px;
@@ -223,17 +284,19 @@ header{position:sticky;top:0;z-index:30;background:rgba(14,14,17,.88);backdrop-f
 .live-top3-head .totais{
   margin-left:auto;font-size:11px;color:var(--muted);font-family:var(--mono);font-weight:700;
 }
-/* SEMPRE 3 colunas lado a lado */
+/* SEMPRE 3 colunas lado a lado (mobile + desktop) */
 .live-top3-grid{
-  display:grid;
-  grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:8px;
+  display:grid !important;
+  grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+  gap:6px !important;
+  width:100%;
 }
 .lt3-card{
-  position:relative;border-radius:14px;padding:10px 8px 10px;
+  position:relative;border-radius:12px;padding:8px 6px 8px;
   border:1px solid var(--line2);
   background:linear-gradient(160deg,rgba(255,255,255,.04),var(--card) 50%);
-  overflow:hidden;min-width:0;
+  overflow:hidden;min-width:0 !important;
+  max-width:100%;
 }
 .lt3-card.l1{border-color:rgba(224,176,74,.55);background:linear-gradient(160deg,rgba(224,176,74,.14),var(--card) 55%);box-shadow:0 0 20px rgba(224,176,74,.08)}
 .lt3-card.l2{border-color:rgba(183,194,208,.4);background:linear-gradient(160deg,rgba(183,194,208,.1),var(--card) 55%)}
@@ -253,8 +316,15 @@ header{position:sticky;top:0;z-index:30;background:rgba(14,14,17,.88);backdrop-f
   padding:1px 5px;border-radius:6px;
 }
 .lt3-body{display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px}
-.lt3-card .av{width:44px;height:44px;border-radius:11px;border:2px solid var(--line2);flex:none}
-.lt3-card .av::before{font-size:13px}
+.lt3-card .av{width:40px;height:40px;border-radius:10px;border:2px solid var(--line2);flex:none}
+.lt3-card .av::before{font-size:12px}
+@media (max-width:380px){
+  .lt3-card{padding:6px 4px}
+  .lt3-card .av{width:34px;height:34px}
+  .lt3-info .nm{font-size:10px}
+  .lt3-stats .pct{font-size:13px}
+  .lt3-badge{font-size:8px;padding:2px 5px}
+}
 .lt3-info{min-width:0;width:100%}
 .lt3-info .nm{
   font-weight:800;font-size:11px;line-height:1.2;
@@ -458,7 +528,7 @@ header{position:sticky;top:0;z-index:30;background:rgba(14,14,17,.88);backdrop-f
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="4"/><path d="M2 21a7 7 0 0 1 14 0"/><path d="M17 4a4 4 0 0 1 0 8"/><path d="M22 21a7 7 0 0 0-4-6.3"/></svg>Candidatos
       </button>
       <button data-v="v-pesq">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M5 20v-7"/><path d="M12 20V5"/><path d="M19 20v-11"/></svg>Pesquisas
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V9"/><path d="M12 19V5"/><path d="M20 19v-7"/><path d="M2 19h20"/></svg>Apuração
       </button>
     </div>
   </div>
@@ -546,9 +616,9 @@ header{position:sticky;top:0;z-index:30;background:rgba(14,14,17,.88);backdrop-f
     <div id="listaCand"></div>
   </section>
 
-  <!-- ===== PESQUISAS ===== -->
+  <!-- ===== APURAÇÃO ===== -->
   <section class="view" id="v-pesq">
-    <div class="card" id="pesqConteudo"></div>
+    <div id="apuracaoConteudo"></div>
   </section>
 
 </main>
@@ -753,8 +823,9 @@ async function registrarParticipacao(candidateNumber){
     $("#liveTotal").textContent = Number(data || 0).toLocaleString("pt-BR");
     $("#liveState").textContent = "AO VIVO";
     document.querySelector(".live-total")?.classList.remove("erro");
-    // Atualiza o Top 3 imediatamente após o voto
+    // Atualiza Top 3 e Apuração após o voto
     if(typeof atualizarLiveTop3 === "function") atualizarLiveTop3();
+    if(typeof montarApuracao === "function") montarApuracao();
     return data;
   }catch(e){
     mostrarErroSupabase(e);
@@ -918,6 +989,7 @@ function irPara(id){
   document.querySelectorAll(".view").forEach(v => v.classList.toggle("on", v.id === id));
   document.querySelectorAll(".tabs button").forEach(b => b.classList.toggle("on", b.dataset.v === id));
   window.scrollTo({ top:0, behavior:"smooth" });
+  if(id === "v-pesq" && typeof montarApuracao === "function") montarApuracao();
 }
 document.querySelectorAll(".tabs button").forEach(b => b.onclick = () => irPara(b.dataset.v));
 $("#verTodos").onclick = () => irPara("v-cand");
@@ -954,33 +1026,109 @@ function listar(filtro=""){
 $("#busca").addEventListener("input", e => listar(e.target.value));
 listar();
 
-/* ---------- PESQUISAS ---------- */
-function montarPesquisa(){
-  const ok = PESQUISA.instituto && PESQUISA.registro && PESQUISA.resultados.length;
-  const box = $("#pesqConteudo");
-  if(!ok){
-    box.innerHTML = `<div class="label" style="margin-bottom:6px">Pesquisas registradas</div>
-      <div class="vazio-msg">Nenhuma pesquisa cadastrada ainda.<br><small>Só mostramos pesquisas registradas no TSE.</small></div>`;
-    return;
-  }
-  const res = PESQUISA.resultados.map(r => ({ ...r, c: porNumero(r.numero) })).filter(r => r.c).sort((a,b) => b.pct - a.pct);
-  const max = Math.max(...res.map(r => r.pct), 1);
-  const fonte = `Fonte: ${PESQUISA.instituto} · Reg. TSE ${PESQUISA.registro} · ${PESQUISA.data}`;
+/* ---------- APURAÇÃO (votos reais) ---------- */
+async function montarApuracao(){
+  const box = $("#apuracaoConteudo");
+  if(!box) return;
 
-  box.innerHTML = `<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px"><b>${PESQUISA.instituto}</b><span class="fonte-mini mono" style="font-size:11px;color:var(--muted)">${PESQUISA.data}</span></div>` +
-    res.map(r => `
-      <div class="linha-pesq">
-        ${avatar(r.c)}
-        <div style="flex:1;min-width:0">
-          <div style="display:flex;justify-content:space-between;font-weight:700;font-size:15px"><span>${r.c.curto} <span style="color:var(--muted);font-weight:500">· ${r.c.partido}</span></span><span class="mono">${fmtPct(r.pct)}</span></div>
-          <div class="bar"><i style="width:${(r.pct/max)*100}%"></i></div>
+  box.innerHTML = `
+    <div class="ap-head">
+      <div>
+        <h2>Apuração dos Votos</h2>
+        <div class="sub">Contagem em tempo real nesta sessão</div>
+      </div>
+      <span class="ap-chip-live"><i></i>AO VIVO</span>
+    </div>
+    <div class="ap-empty">Carregando apuração…</div>`;
+
+  try{
+    const rows = await rpcSupabase("get_public_vote_totals", {});
+    const list = Array.isArray(rows) ? rows : [];
+
+    const byNum = {};
+    list.forEach(r => { byNum[r.candidate_number] = Number(r.total) || 0; });
+
+    const brancos = byNum["BRANCO"] || 0;
+    const nulos = byNum["NULO"] || 0;
+
+    // Candidatos oficiais com votos (0 se não tiver)
+    const cands = CANDIDATOS.map(c => ({
+      ...c,
+      votos: byNum[c.numero] || 0
+    })).sort((a,b) => b.votos - a.votos);
+
+    const totalCand = cands.reduce((s,c) => s + c.votos, 0);
+    const totalGeral = totalCand + brancos + nulos;
+    const lider = cands[0] && cands[0].votos > 0 ? cands[0] : null;
+    const max = Math.max(...cands.map(c => c.votos), 1);
+
+    const pct = (v) => totalGeral ? (v / totalGeral * 100) : 0;
+    const pctStr = (v) => pct(v).toFixed(1).replace(".", ",") + "%";
+
+    box.innerHTML = `
+      <div class="ap-head">
+        <div>
+          <h2>Apuração dos Votos</h2>
+          <div class="sub">Contagem em tempo real nesta sessão</div>
         </div>
-      </div>`).join("") + `<div class="fonte" style="margin:4px 0 0">${fonte}</div>`;
+        <span class="ap-chip-live"><i></i>AO VIVO</span>
+      </div>
 
-  // Top 3 de pesquisa registrada agora fica só na aba Pesquisas (não na urna)
+      <div class="ap-stats">
+        <div class="ap-stat">
+          <div class="ic t">👥</div>
+          <div class="val">${totalGeral.toLocaleString("pt-BR")}</div>
+          <div class="lbl">Total de Votos</div>
+        </div>
+        <div class="ap-stat">
+          <div class="ic l">🏆</div>
+          <div class="val" style="font-size:${lider ? "13px" : "18px"}">${lider ? (lider.curto || lider.nome.split(" ").slice(-1)[0]) : "—"}</div>
+          <div class="lbl">Líder</div>
+          <div class="subv">${lider ? lider.votos.toLocaleString("pt-BR") + " votos" : "sem votos"}</div>
+        </div>
+        <div class="ap-stat">
+          <div class="ic b">📋</div>
+          <div class="val" style="font-size:13px">${brancos} | ${nulos}</div>
+          <div class="lbl">Brancos | Nulos</div>
+        </div>
+      </div>
+
+      <div class="ap-list-card">
+        <div class="label">Distribuição dos votos por candidato</div>
+        ${cands.every(c => c.votos === 0) ? '<div class="ap-empty">Nenhum voto registrado ainda.</div>' :
+          cands.map((c,i) => `
+            <div class="ap-row ${i===0 && c.votos>0 ? "lider" : ""}">
+              <span class="nb">${c.numero}</span>
+              <div class="info">
+                <div class="nm">${c.nome}${i===0 && c.votos>0 ? '<span class="ap-badge-lider">1º</span>' : ""} <span style="color:var(--muted);font-weight:600;font-size:11px">(${c.partido})</span></div>
+                <div class="bar"><i style="width:${(c.votos/max)*100}%"></i></div>
+              </div>
+              <div class="nums">
+                <b>${c.votos.toLocaleString("pt-BR")}</b>
+                <span>${pctStr(c.votos)}</span>
+              </div>
+            </div>
+          `).join("")}
+      </div>`;
+  }catch(e){
+    console.error("apuracao:", e);
+    box.innerHTML = `
+      <div class="ap-head">
+        <div>
+          <h2>Apuração dos Votos</h2>
+          <div class="sub">Contagem em tempo real nesta sessão</div>
+        </div>
+      </div>
+      <div class="card"><div class="ap-empty">Não foi possível carregar a apuração.</div></div>`;
+  }
 }
 
-montarPesquisa();
+// Mantém nome antigo para não quebrar chamadas
+function montarPesquisa(){ montarApuracao(); }
+
+// Atualiza apuração quando a aba é aberta
+const _irParaOriginal = typeof irPara === "function" ? irPara : null;
+
 
 /* ---------- CONTAGEM REGRESSIVA ---------- */
 function tick(){
@@ -1495,16 +1643,21 @@ async function atualizarTotalComTop3(){
 }
 
 iniciarContador();
-// sobrescreve o intervalo do contador para também atualizar o top3
 (function(){
-  // reinicia com a versão combinada
   if(typeof atualizarTotal === "function"){
-    // chama uma vez o top3
     atualizarLiveTop3();
     setInterval(atualizarLiveTop3, 4000);
   }
+  // Apuração ao vivo a cada 5s se a aba estiver visível
+  setInterval(() => {
+    const view = document.getElementById("v-pesq");
+    if(view && view.classList.contains("on") && typeof montarApuracao === "function"){
+      montarApuracao();
+    }
+  }, 5000);
 })();
 render();
+montarApuracao();
 
 </script>
 </body>
