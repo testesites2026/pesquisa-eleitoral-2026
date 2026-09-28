@@ -396,6 +396,10 @@ header{position:sticky;top:0;z-index:30;background:rgba(14,14,17,.88);backdrop-f
 .uploader .pick b{color:var(--accent-hi)}
 .uploader .clearpic{height:42px;padding:0 12px;border-radius:12px;background:transparent;border:1px solid var(--line2);font-size:12px;font-weight:700;color:var(--muted)}
 .filehint{font-size:11px;color:var(--muted);margin:-4px 0 10px}
+.copylink-row{display:flex;align-items:center;gap:8px;margin:0 0 10px}
+.copylink-btn{border:1px solid rgba(245,184,61,.42);background:rgba(245,184,61,.10);color:#f5b83d;border-radius:10px;padding:7px 10px;font-size:11px;font-weight:800;cursor:pointer;white-space:nowrap}
+.copylink-btn:active{transform:scale(.98)}
+.copylink-url{font-size:10px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;user-select:all;flex:1}
 .story-opts{display:flex;flex-wrap:wrap;gap:8px}
 .story-chip{height:38px;padding:0 12px;border-radius:999px;border:1px solid var(--line2);background:var(--card);font-size:12px;font-weight:800;color:#d7d7de}
 .story-chip.on{background:linear-gradient(180deg,var(--accent),var(--accent-dk));border-color:transparent;color:var(--on-accent)}
@@ -989,8 +993,10 @@ header{position:sticky;top:0;z-index:30;background:rgba(14,14,17,.88);backdrop-f
       <button class="clearpic" id="btnLimparFoto" type="button">Limpar</button>
     </div>
     <div class="filehint" id="fotoNome">Nenhuma foto selecionada.</div>
-    <div class="filehint">Sua foto vai preencher a área branca da moldura automaticamente.</div>
-    <div class="filehint">A moldura será gerada limpa, sem frases prontas.</div>
+    <div class="copylink-row">
+      <button class="copylink-btn" id="btnCopiarLink" type="button">🔗 Copiar link</button>
+      <div class="copylink-url" id="linkSeco">https://pesquisa-eleitoral-2026.vercel.app</div>
+    </div>
 
 
     <div class="story-actions">
@@ -1009,7 +1015,6 @@ header{position:sticky;top:0;z-index:30;background:rgba(14,14,17,.88);backdrop-f
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>
     Baixar imagem
   </button>
-  <button class="btn btn-sec" id="btnIrSite">Abrir o site</button>
   <button class="btn btn-ghost" id="btnDeNovo">Voltar</button>
 </div>
 <div class="toast" id="toast"></div>
@@ -1952,7 +1957,24 @@ $("#btnBaixar").onclick = () => {
 
 $("#btnBaixarStory").onclick = () => $("#btnBaixar").click();
 $("#btnGerarStory").onclick = atualizarPreviewStory;
-$("#btnIrSite").onclick = () => { fecharSheet(); window.scrollTo({top:0,behavior:"smooth"}); };
+$("#btnCopiarLink").onclick = async () => {
+  const link = "https://pesquisa-eleitoral-2026.vercel.app";
+  try{
+    await navigator.clipboard.writeText(link);
+    toast("Link copiado!");
+  }catch(e){
+    const ta = document.createElement("textarea");
+    ta.value = link;
+    ta.setAttribute("readonly", "");
+    ta.style.position = "fixed";
+    ta.style.opacity = "0";
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand("copy");
+    ta.remove();
+    toast("Link copiado!");
+  }
+};
 
 $("#btnWhats").onclick = () => {
   const msg = encodeURIComponent(textoShare());
