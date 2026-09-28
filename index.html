@@ -1369,7 +1369,7 @@ function carregarImg(src){
 function rr(ctx, x, y, w, h, r){ ctx.beginPath(); ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r); ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath(); }
 function ajustaFonte(ctx, txt, peso, max, larg){ let s = max; do { ctx.font = `${peso} ${s}px Inter, sans-serif`; s -= 2; } while(ctx.measureText(txt).width > larg && s > 20); }
 
-async function gerarImagem(voto, usarFotoPessoa = false){
+async function gerarImagemGenerica(voto, usarFotoPessoa = false){
   await document.fonts.ready;
   const W = 1080, H = 1920, cv = document.createElement("canvas");
   cv.width = W; cv.height = H;
@@ -1596,6 +1596,100 @@ async function gerarImagem(voto, usarFotoPessoa = false){
 
   rr(x, 578, 1708, 324, 42, 16); x.fillStyle = "rgba(255,255,255,.06)"; x.fill();
   x.fillStyle = "#fff"; x.fillText("Convide e compartilhe", 612, 1735);
+
+  return new Promise(r => cv.toBlob(r, "image/png"));
+}
+
+
+
+function desenharCover(ctx, img, x, y, w, h){
+  const s = Math.max(w / img.width, h / img.height);
+  const dw = img.width * s, dh = img.height * s;
+  ctx.drawImage(img, x + (w - dw) / 2, y + (h - dh) / 2, dw, dh);
+}
+
+function getTemplateCompartilhar(voto){
+  if(voto?.tipo !== "cand") return "";
+  return ({
+    "13": "lula_13.png",
+    "22": "flavio_22.png",
+    "30": "zema_30.png",
+    "55": "caiado_55.png",
+    "70": "augusto_70.png",
+    "14": "renan_14.png"
+  })[voto.c.numero] || "";
+}
+
+async function gerarImagem(voto, usarFotoPessoa = false){
+  const templatePath = getTemplateCompartilhar(voto);
+  if(!templatePath) return gerarImagemGenerica(voto, usarFotoPessoa);
+
+  const W = 1080, H = 1920;
+  const cv = document.createElement("canvas");
+  cv.width = W; cv.height = H;
+  const x = cv.getContext("2d");
+
+  const template = await carregarImg(templatePath);
+  if(!template) return gerarImagemGenerica(voto, usarFotoPessoa);
+
+  x.drawImage(template, 0, 0, W, H);
+
+  // Faixa opcional com o slogan escolhido
+  if(sloganAtual){
+    const faixaX = 122, faixaY = 262, faixaW = 836, faixaH = 66;
+    rr(x, faixaX, faixaY, faixaW, faixaH, 24);
+    x.fillStyle = "rgba(0,0,0,.38)";
+    x.fill();
+    x.strokeStyle = "rgba(255,255,255,.18)";
+    x.lineWidth = 2;
+    x.stroke();
+    x.fillStyle = "#ffffff";
+    x.font = "800 30px Inter, sans-serif";
+    x.textAlign = "center";
+    x.textBaseline = "middle";
+    let frase = sloganAtual;
+    while(x.measureText(frase).width > faixaW - 36 && parseInt(x.font.match(/\d+/)[0]) > 18){
+      const size = parseInt(x.font.match(/\d+/)[0]) - 2;
+      x.font = `800 ${size}px Inter, sans-serif`;
+    }
+    x.fillText(frase, faixaX + faixaW/2, faixaY + faixaH/2 + 1);
+    x.textAlign = "left";
+    x.textBaseline = "alphabetic";
+  }
+
+  // Área da foto do usuário dentro da moldura
+  const fotoX = 130, fotoY = 350, fotoW = 720, fotoH = 720, fotoR = 34;
+  if(usarFotoPessoa && fotoPessoaData){
+    const imgP = await carregarImg(fotoPessoaData);
+    if(imgP){
+      x.save();
+      rr(x, fotoX, fotoY, fotoW, fotoH, fotoR);
+      x.clip();
+      desenharCover(x, imgP, fotoX, fotoY, fotoW, fotoH);
+      x.restore();
+
+      x.save();
+      rr(x, fotoX, fotoY, fotoW, fotoH, fotoR);
+      x.strokeStyle = "rgba(255,255,255,.35)";
+      x.lineWidth = 2;
+      x.setLineDash([10,10]);
+      x.stroke();
+      x.setLineDash([]);
+      x.restore();
+    }
+  }
+
+  // Rodapé discreto com o site, para incentivar compartilhamento
+  rr(x, 135, 1804, 810, 62, 22);
+  x.fillStyle = "rgba(0,0,0,.42)";
+  x.fill();
+  x.fillStyle = "#ffffff";
+  x.font = "700 28px Inter, sans-serif";
+  x.textAlign = "center";
+  x.textBaseline = "middle";
+  x.fillText((location.host || "pesquisa-eleitoral-2026.vercel.app"), 540, 1835);
+  x.textAlign = "left";
+  x.textBaseline = "alphabetic";
 
   return new Promise(r => cv.toBlob(r, "image/png"));
 }
