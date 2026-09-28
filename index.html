@@ -817,7 +817,7 @@ async function registrarParticipacao(candidateNumber){
     // 1 voto por client_id — ON CONFLICT no Supabase impede duplicata
     const data = await rpcSupabase("register_vote", {
       p_client_id: getClientId(),
-      p_candidate_number: String(candidateNumber || "NULO")
+      p_candidate_number: String(candidateNumber || "NULO").trim().toUpperCase()
     });
 
     $("#liveTotal").textContent = Number(data || 0).toLocaleString("pt-BR");
@@ -1046,10 +1046,15 @@ async function montarApuracao(){
     const list = Array.isArray(rows) ? rows : [];
 
     const byNum = {};
-    list.forEach(r => { byNum[r.candidate_number] = Number(r.total) || 0; });
+    list.forEach(r => {
+      const key = String(r.candidate_number || "").trim().toUpperCase();
+      if(!key) return;
+      byNum[key] = (byNum[key] || 0) + (Number(r.total) || 0);
+    });
 
-    const brancos = byNum["BRANCO"] || 0;
-    const nulos = byNum["NULO"] || 0;
+    // Aceita variações de nome que possam ter entrado no banco
+    const brancos = byNum["BRANCO"] || byNum["BRANCOS"] || byNum["WHITE"] || 0;
+    const nulos = byNum["NULO"] || byNum["NULOS"] || byNum["NULL"] || byNum["NULO "] || 0;
 
     // Candidatos oficiais com votos (0 se não tiver)
     const cands = CANDIDATOS.map(c => ({
@@ -1095,7 +1100,7 @@ async function montarApuracao(){
 
       <div class="ap-list-card">
         <div class="label">Distribuição dos votos por candidato</div>
-        ${cands.every(c => c.votos === 0) ? '<div class="ap-empty">Nenhum voto registrado ainda.</div>' :
+        ${cands.every(c => c.votos === 0) && !brancos && !nulos ? '<div class="ap-empty">Nenhum voto registrado ainda.</div>' :
           cands.map((c,i) => `
             <div class="ap-row ${i===0 && c.votos>0 ? "lider" : ""}">
               <span class="nb">${c.numero}</span>
@@ -1108,7 +1113,30 @@ async function montarApuracao(){
                 <span>${pctStr(c.votos)}</span>
               </div>
             </div>
-          `).join("")}
+          `).join("") + `
+            <div class="ap-row">
+              <span class="nb" style="color:var(--muted);border-color:var(--line2);background:transparent">BR</span>
+              <div class="info">
+                <div class="nm">VOTOS EM BRANCO</div>
+                <div class="bar"><i style="width:${brancos && max ? (brancos/max)*100 : 0}%;background:#94a3b8"></i></div>
+              </div>
+              <div class="nums">
+                <b>${brancos.toLocaleString("pt-BR")}</b>
+                <span>${pctStr(brancos)}</span>
+              </div>
+            </div>
+            <div class="ap-row">
+              <span class="nb" style="color:var(--muted);border-color:var(--line2);background:transparent">NL</span>
+              <div class="info">
+                <div class="nm">VOTOS NULOS</div>
+                <div class="bar"><i style="width:${nulos && max ? (nulos/max)*100 : 0}%;background:#64748b"></i></div>
+              </div>
+              <div class="nums">
+                <b>${nulos.toLocaleString("pt-BR")}</b>
+                <span>${pctStr(nulos)}</span>
+              </div>
+            </div>
+          `}
       </div>`;
   }catch(e){
     console.error("apuracao:", e);
