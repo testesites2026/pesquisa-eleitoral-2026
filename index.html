@@ -499,6 +499,37 @@ header{position:sticky;top:0;z-index:30;background:rgba(14,14,17,.88);backdrop-f
 }
 .live-total.erro .diag-btn{display:inline-flex}
 
+
+/* ===== Anúncio nativo compacto ===== */
+.ad-slot{
+  width:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-height:72px;
+  margin:0 0 12px;
+  padding:6px;
+  overflow:hidden;
+  border:1px solid var(--line);
+  border-radius:14px;
+  background:linear-gradient(180deg,rgba(255,255,255,.025),rgba(255,255,255,.012));
+}
+.ad-slot > div{width:100%;max-width:100%}
+.ad-slot iframe,.ad-slot img{max-width:100% !important}
+@media (max-width:480px){
+  .ad-slot{
+    min-height:62px;
+    padding:4px;
+    margin-bottom:10px;
+  }
+}
+
+
+.ad-slot-bottom{
+  margin-top:12px;
+  margin-bottom:12px;
+}
+
 </style>
 </head>
 <body>
@@ -562,6 +593,15 @@ header{position:sticky;top:0;z-index:30;background:rgba(14,14,17,.88);backdrop-f
       <div class="chips" id="chips"></div>
     </div>
 
+    <!-- ANÚNCIO ADSTERRA · Native Banner 4:1 -->
+    <div class="ad-slot" aria-label="Publicidade">
+      <div>
+        <script async="async" data-cfasync="false" src="https://pl31544696.profitableratecpmnetwork.com/a6f78dd72a9262e23e9847ff1b1c1701/invoke.js"></script>
+        <div id="container-a6f78dd72a9262e23e9847ff1b1c1701"></div>
+      </div>
+    </div>
+    <!-- FIM ANÚNCIO -->
+
     <!-- Top 3 AO VIVO (votos reais do Supabase) -->
     <div class="live-top3" id="liveTop3">
       <div class="live-top3-head">
@@ -604,6 +644,14 @@ header{position:sticky;top:0;z-index:30;background:rgba(14,14,17,.88);backdrop-f
       </div>
     </div>
 
+    <!-- SEGUNDO ANÚNCIO · abaixo da urna
+         Crie uma NOVA Ad Unit 4:1 na Adsterra e substitua este conteúdo pelo novo código.
+         Não reutilize o mesmo container/ID do primeiro anúncio. -->
+    <div class="ad-slot ad-slot-bottom" aria-label="Publicidade">
+      <div id="ad-slot-bottom-placeholder"></div>
+    </div>
+    <!-- FIM SEGUNDO ANÚNCIO -->
+
     <div class="footer-disclaimer">
       <b>Pesquisa Eleitoral (Não Oficial)</b>
       <p>Este site é apenas uma simulação interativa sem vínculo com a Justiça Eleitoral e não representa a realidade.</p>
@@ -613,11 +661,26 @@ header{position:sticky;top:0;z-index:30;background:rgba(14,14,17,.88);backdrop-f
   <!-- ===== CANDIDATOS ===== -->
   <section class="view" id="v-cand">
     <input class="busca" id="busca" type="search" placeholder="Buscar por nome, partido ou número" autocomplete="off">
+
+    <!-- ANÚNCIO · aba Candidatos
+         Use uma NOVA Ad Unit 4:1 da Adsterra aqui. -->
+    <div class="ad-slot" aria-label="Publicidade">
+      <div id="ad-slot-candidatos-placeholder"></div>
+    </div>
+    <!-- FIM ANÚNCIO -->
+
     <div id="listaCand"></div>
   </section>
 
   <!-- ===== APURAÇÃO ===== -->
   <section class="view" id="v-pesq">
+    <!-- ANÚNCIO · aba Apuração
+         Use uma NOVA Ad Unit 4:1 da Adsterra aqui. -->
+    <div class="ad-slot" aria-label="Publicidade">
+      <div id="ad-slot-apuracao-placeholder"></div>
+    </div>
+    <!-- FIM ANÚNCIO -->
+
     <div id="apuracaoConteudo"></div>
   </section>
 
