@@ -603,6 +603,103 @@ header{position:sticky;top:0;z-index:30;background:rgba(14,14,17,.88);backdrop-f
   }
 }
 
+
+
+/* ===== V7 · topo mais limpo + upload de foto destacado ===== */
+.topo-card-clean{
+  display:block;
+  padding:16px 16px 15px;
+  background:linear-gradient(145deg,#171922,#14161d);
+}
+.topo-hidden-countdown{display:none!important}
+.live-total-clean{
+  display:grid;
+  grid-template-columns:54px minmax(0,1fr) auto;
+  align-items:center;
+  gap:12px;
+  margin:0;
+  padding:0;
+  border:0;
+}
+.live-total-clean .live-icon{
+  width:52px;height:52px;border-radius:15px;
+  display:grid;place-items:center;
+  color:var(--accent-hi);
+  background:rgba(245,184,61,.09);
+  border:1px solid rgba(245,184,61,.28);
+}
+.live-total-clean .live-icon svg{width:27px;height:27px}
+.live-total-clean .copy{min-width:0}
+.live-total-clean .live-heading{
+  font-size:11px;font-weight:900;letter-spacing:.07em;
+  color:var(--muted);text-transform:uppercase;
+  white-space:nowrap;
+}
+.live-total-clean .live-number-line{
+  display:flex;align-items:baseline;gap:9px;margin-top:4px;min-width:0;
+}
+.live-total-clean .live-number-line b{
+  font-family:var(--mono);font-size:28px;line-height:1;color:#fff;
+}
+.live-total-clean .live-number-line span{
+  font-size:11px;font-weight:700;color:var(--muted);white-space:nowrap;
+}
+.live-total-clean .state{
+  align-self:start;
+  padding:7px 11px;border-radius:999px;
+  font-size:9px!important;font-weight:900!important;
+  color:var(--accent-hi)!important;
+  background:rgba(245,184,61,.10);
+  border:1px solid rgba(245,184,61,.28);
+}
+.topo-card-clean .diag-btn{display:none!important}
+.btn-share-clean{
+  width:max-content;min-width:166px;height:46px;
+  margin-top:15px;padding:0 18px;
+  justify-content:center;
+  font-size:14px;
+  box-shadow:0 7px 18px rgba(245,184,61,.20);
+}
+.btn-share-clean span{display:inline!important}
+
+/* Botão de adicionar foto: maior e com contraste alto */
+.uploader{gap:10px;margin:4px 0 13px}
+.uploader .pick{
+  min-height:58px;height:58px;
+  border-radius:15px;
+  background:linear-gradient(180deg,var(--accent),var(--accent-dk));
+  border:1px solid rgba(255,213,122,.70);
+  color:var(--on-accent);
+  box-shadow:0 7px 18px rgba(245,184,61,.24);
+  font-size:15px;font-weight:900;
+  cursor:pointer;
+}
+.uploader .pick b{color:var(--on-accent)!important}
+.uploader .clearpic{
+  height:58px;min-width:82px;padding:0 15px;border-radius:15px;
+  font-size:13px;
+}
+
+@media (max-width:390px){
+  .topo-card-clean{padding:14px}
+  .live-total-clean{grid-template-columns:48px minmax(0,1fr) auto;gap:9px}
+  .live-total-clean .live-icon{width:46px;height:46px;border-radius:13px}
+  .live-total-clean .live-icon svg{width:24px;height:24px}
+  .live-total-clean .live-heading{font-size:9.5px;letter-spacing:.055em}
+  .live-total-clean .live-number-line b{font-size:25px}
+  .live-total-clean .live-number-line span{font-size:9.5px}
+  .live-total-clean .state{padding:6px 8px;font-size:8px!important}
+  .btn-share-clean{min-width:155px;height:44px;margin-top:13px;font-size:13px}
+}
+
+@media (min-width:900px){
+  .topo-card-clean{min-height:unset;padding:18px 22px}
+  .topo-card-clean .live-total-clean{
+    display:grid;grid-template-columns:54px minmax(0,1fr) auto;
+    margin:0;padding:0;border:0;background:transparent;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -643,17 +740,28 @@ header{position:sticky;top:0;z-index:30;background:rgba(14,14,17,.88);backdrop-f
   <!-- ===== URNA ===== -->
   <section class="view on" id="v-urna">
 
-    <div class="card topo-card">
-      <div class="t">
-        <div class="row"><span class="label" id="cdLabel">Eleição em</span><span class="chip-live"><i></i>1º turno</span></div>
-        <div class="cd" id="cd"></div>
-        <div class="live-total">
-          <i class="dot"></i>
-          <div class="copy"><span>Contagem Geral de Votos</span><b id="liveTotal">0</b></div>
-          <div class="state" id="liveState">AO VIVO</div><button class="diag-btn" id="btnDiag" type="button">VER ERRO</button>
-        </div>
+    <div class="card topo-card topo-card-clean">
+      <!-- Mantidos ocultos para preservar a lógica do contador sem poluir a tela -->
+      <div class="topo-hidden-countdown" aria-hidden="true">
+        <span id="cdLabel">Eleição em</span>
+        <div id="cd"></div>
       </div>
-      <button class="btn-share" id="btnShareSite">
+
+      <div class="live-total live-total-clean">
+        <div class="live-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="9" cy="8" r="3"/><path d="M3 20a6 6 0 0 1 12 0"/><path d="M16 5a3 3 0 0 1 0 6"/><path d="M21 20a6 6 0 0 0-4-5.4"/>
+          </svg>
+        </div>
+        <div class="copy">
+          <div class="live-heading">Contagem Geral de Votos</div>
+          <div class="live-number-line"><b id="liveTotal">0</b><span>votos computados</span></div>
+        </div>
+        <div class="state" id="liveState">AO VIVO</div>
+        <button class="diag-btn" id="btnDiag" type="button">VER ERRO</button>
+      </div>
+
+      <button class="btn-share btn-share-clean" id="btnShareSite">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4"/></svg><span>Compartilhar</span>
       </button>
     </div>
