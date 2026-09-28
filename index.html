@@ -1,6 +1,22 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+<script>
+/* Segurança: bloqueia pop-ups que não sejam iniciados por uma ação real do usuário. */
+(function(){
+  const openOriginal = window.open.bind(window);
+  window.open = function(url, target, features){
+    const ua = navigator.userActivation;
+    const permitido = ua ? ua.isActive : true;
+    if(!permitido){
+      console.warn('Pop-up automático bloqueado:', url);
+      return null;
+    }
+    return openOriginal(url, target, features);
+  };
+})();
+</script>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0e0e11">
@@ -1642,16 +1658,16 @@ $("#btnBaixar").onclick = () => {
 
 $("#btnBaixarStory").onclick = () => $("#btnBaixar").click();
 $("#btnGerarStory").onclick = atualizarPreviewStory;
-$("#btnIrSite").onclick = () => { window.open(location.href, "_blank"); };
+$("#btnIrSite").onclick = () => { fecharSheet(); window.scrollTo({top:0,behavior:"smooth"}); };
 
 $("#btnWhats").onclick = () => {
   const msg = encodeURIComponent(textoShare());
-  window.open(`https://wa.me/?text=${msg}`, "_blank", "noopener");
+  window.open(`https://wa.me/?text=${msg}`, "_blank", "noopener,noreferrer");
 };
 
 $("#btnFacebook").onclick = () => {
   const u = encodeURIComponent(location.href);
-  window.open(`https://www.facebook.com/sharer/sharer.php?u=${u}`, "_blank", "noopener");
+  window.open(`https://www.facebook.com/sharer/sharer.php?u=${u}`, "_blank", "noopener,noreferrer");
 };
 
 $("#btnInstagram").onclick = async () => {
