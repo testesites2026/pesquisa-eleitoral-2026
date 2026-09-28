@@ -530,6 +530,63 @@ header{position:sticky;top:0;z-index:30;background:rgba(14,14,17,.88);backdrop-f
   margin-bottom:12px;
 }
 
+
+/* Ajuste mobile: anúncio ativo somente após a urna */
+.ad-slot-bottom{
+  min-height:0 !important;
+  padding:4px !important;
+  margin-top:10px !important;
+  margin-bottom:10px !important;
+}
+@media (max-width:480px){
+  .ad-slot-bottom{
+    max-height:150px;
+    overflow:hidden;
+  }
+}
+
+
+/* Banner 320x50 no rodapé das abas */
+.ad-banner-320{
+  min-height:58px !important;
+  padding:4px !important;
+  margin-top:14px !important;
+  margin-bottom:8px !important;
+}
+.ad-banner-320 > div{
+  width:320px !important;
+  max-width:100% !important;
+  margin:0 auto !important;
+  overflow:hidden;
+}
+@media (max-width:360px){
+  .ad-banner-320{
+    overflow-x:auto;
+    justify-content:flex-start;
+  }
+}
+
+
+/* Banner 468x60 no rodapé da aba Apuração */
+.ad-banner-468{
+  min-height:68px !important;
+  padding:4px !important;
+  margin-top:14px !important;
+  margin-bottom:8px !important;
+}
+.ad-banner-468 > div{
+  width:468px !important;
+  max-width:100% !important;
+  margin:0 auto !important;
+  overflow:hidden;
+}
+@media (max-width:480px){
+  .ad-banner-468{
+    overflow-x:auto;
+    justify-content:flex-start;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -592,17 +649,7 @@ header{position:sticky;top:0;z-index:30;background:rgba(14,14,17,.88);backdrop-f
       </div>
       <div class="chips" id="chips"></div>
     </div>
-
-    <!-- ANÚNCIO ADSTERRA · Native Banner 4:1 -->
-    <div class="ad-slot" aria-label="Publicidade">
-      <div>
-        <script async="async" data-cfasync="false" src="https://pl31544696.profitableratecpmnetwork.com/a6f78dd72a9262e23e9847ff1b1c1701/invoke.js"></script>
-        <div id="container-a6f78dd72a9262e23e9847ff1b1c1701"></div>
-      </div>
-    </div>
-    <!-- FIM ANÚNCIO -->
-
-    <!-- Top 3 AO VIVO (votos reais do Supabase) -->
+<!-- Top 3 AO VIVO (votos reais do Supabase) -->
     <div class="live-top3" id="liveTop3">
       <div class="live-top3-head">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3"/></svg>
@@ -648,7 +695,8 @@ header{position:sticky;top:0;z-index:30;background:rgba(14,14,17,.88);backdrop-f
          Crie uma NOVA Ad Unit 4:1 na Adsterra e substitua este conteúdo pelo novo código.
          Não reutilize o mesmo container/ID do primeiro anúncio. -->
     <div class="ad-slot ad-slot-bottom" aria-label="Publicidade">
-      <div id="ad-slot-bottom-placeholder"></div>
+      <script async="async" data-cfasync="false" src="https://pl31544696.profitableratecpmnetwork.com/a6f78dd72a9262e23e9847ff1b1c1701/invoke.js"></script>
+        <div id="container-a6f78dd72a9262e23e9847ff1b1c1701"></div>
     </div>
     <!-- FIM SEGUNDO ANÚNCIO -->
 
@@ -662,26 +710,46 @@ header{position:sticky;top:0;z-index:30;background:rgba(14,14,17,.88);backdrop-f
   <section class="view" id="v-cand">
     <input class="busca" id="busca" type="search" placeholder="Buscar por nome, partido ou número" autocomplete="off">
 
-    <!-- ANÚNCIO · aba Candidatos
-         Use uma NOVA Ad Unit 4:1 da Adsterra aqui. -->
-    <div class="ad-slot" aria-label="Publicidade">
-      <div id="ad-slot-candidatos-placeholder"></div>
+    <div id="listaCand"></div>
+
+    <!-- ANÚNCIO · final da aba Candidatos · 320x50 -->
+    <div class="ad-slot ad-banner-320" aria-label="Publicidade">
+      <div>
+        <script>
+  atOptions = {
+    'key' : 'aca6f1a7c103ee0613409f88817105e0',
+    'format' : 'iframe',
+    'height' : 50,
+    'width' : 320,
+    'params' : {}
+  };
+</script>
+<script src="https://www.highrevenueformat.com/aca6f1a7c103ee0613409f88817105e0/invoke.js"></script>
+      </div>
     </div>
     <!-- FIM ANÚNCIO -->
-
-    <div id="listaCand"></div>
   </section>
 
   <!-- ===== APURAÇÃO ===== -->
   <section class="view" id="v-pesq">
-    <!-- ANÚNCIO · aba Apuração
-         Use uma NOVA Ad Unit 4:1 da Adsterra aqui. -->
-    <div class="ad-slot" aria-label="Publicidade">
-      <div id="ad-slot-apuracao-placeholder"></div>
+    <div id="apuracaoConteudo"></div>
+
+    <!-- ANÚNCIO · final da aba Apuração · 468x60 -->
+    <div class="ad-slot ad-banner-468" aria-label="Publicidade">
+      <div>
+        <script>
+  atOptions = {
+    'key' : '65b8cfbb5ef1898b23d5b55514be0831',
+    'format' : 'iframe',
+    'height' : 60,
+    'width' : 468,
+    'params' : {}
+  };
+</script>
+<script src="https://www.highrevenueformat.com/65b8cfbb5ef1898b23d5b55514be0831/invoke.js"></script>
+      </div>
     </div>
     <!-- FIM ANÚNCIO -->
-
-    <div id="apuracaoConteudo"></div>
   </section>
 
 </main>
