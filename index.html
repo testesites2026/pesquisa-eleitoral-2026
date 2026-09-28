@@ -775,7 +775,7 @@ header{position:sticky;top:0;z-index:30;background:rgba(14,14,17,.88);backdrop-f
 <div class="overlay" id="overlay"></div>
 <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitulo">
   <div class="alca"></div>
-  <h2 id="sheetTitulo">Compartilhe sua escolha 🇧🇷</h2><div style="text-align:center;font-size:10px;color:var(--muted);margin-top:-6px;margin-bottom:5px">Molduras 2026 · versão leve ajustada</div>
+  <h2 id="sheetTitulo">Compartilhe sua escolha 🇧🇷</h2><div style="text-align:center;font-size:10px;color:var(--muted);margin-top:-6px;margin-bottom:5px">Molduras 2026 · foto preenchendo moldura</div>
   <p class="subshare">Agora sua foto entra na moldura personalizada do candidato escolhido, pronta para compartilhar.</p>
 
   <div class="share-grid">
@@ -803,7 +803,7 @@ header{position:sticky;top:0;z-index:30;background:rgba(14,14,17,.88);backdrop-f
       <button class="clearpic" id="btnLimparFoto" type="button">Limpar</button>
     </div>
     <div class="filehint" id="fotoNome">Nenhuma foto selecionada.</div>
-    <div class="filehint">Sua foto será encaixada automaticamente dentro da moldura.</div>
+    <div class="filehint">Sua foto vai preencher a área branca da moldura automaticamente.</div>
     <div class="filehint">A moldura será gerada limpa, sem frases prontas.</div>
 
 
@@ -1608,12 +1608,12 @@ function desenharCover(ctx, img, x, y, w, h){
 function getTemplateCompartilhar(voto){
   if(voto?.tipo !== "cand") return "";
   return ({
-    "13": "./lula_13.webp?v=20260928d",
-    "22": "./flavio_22.webp?v=20260928d",
-    "30": "./zema_30.webp?v=20260928d",
-    "55": "./caiado_55.webp?v=20260928d",
-    "70": "./augusto_70.webp?v=20260928d",
-    "14": "./renan_14.webp?v=20260928d"
+    "13": "./lula_13.webp?v=20260928e",
+    "22": "./flavio_22.webp?v=20260928e",
+    "30": "./zema_30.webp?v=20260928e",
+    "55": "./caiado_55.webp?v=20260928e",
+    "70": "./augusto_70.webp?v=20260928e",
+    "14": "./renan_14.webp?v=20260928e"
   })[voto.c.numero] || "";
 }
 
@@ -1657,7 +1657,7 @@ async function gerarImagem(voto, usarFotoPessoa = false){
   }
 
   // Área da foto do usuário dentro da moldura
-  const fotoX = 146, fotoY = 336, fotoW = 592, fotoH = 628, fotoR = 30;
+  const fotoX = 128, fotoY = 320, fotoW = 610, fotoH = 650, fotoR = 28;
   if(usarFotoPessoa && fotoPessoaData){
     const imgP = await carregarImg(fotoPessoaData);
     if(imgP){
