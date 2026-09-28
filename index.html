@@ -775,8 +775,8 @@ header{position:sticky;top:0;z-index:30;background:rgba(14,14,17,.88);backdrop-f
 <div class="overlay" id="overlay"></div>
 <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitulo">
   <div class="alca"></div>
-  <h2 id="sheetTitulo">Compartilhe e convide um amigo 🇧🇷</h2>
-  <p class="subshare">Envie nas redes ou gere um story mais bonito com a sua foto e a do candidato.</p>
+  <h2 id="sheetTitulo">Compartilhe sua escolha 🇧🇷</h2><div style="text-align:center;font-size:10px;color:var(--muted);margin-top:-6px;margin-bottom:5px">Molduras 2026 · versão nova</div>
+  <p class="subshare">Agora sua foto entra dentro da moldura personalizada do candidato escolhido.</p>
 
   <div class="share-grid">
     <button class="sbtn wa" id="btnWhats">
@@ -794,8 +794,8 @@ header{position:sticky;top:0;z-index:30;background:rgba(14,14,17,.88);backdrop-f
   </div>
 
   <div class="story-box">
-    <div class="tt">Monte seu card de story</div>
-    <div class="sub">Adicione sua foto e escolha uma frase chamativa.</div>
+    <div class="tt">Sua moldura personalizada está pronta</div>
+    <div class="sub">Escolha sua foto: ela será encaixada no espaço “SUA FOTO AQUI”.</div>
 
     <div class="uploader">
       <label class="pick" for="fotoPessoa">📷 <b>Adicionar minha foto</b></label>
@@ -1611,12 +1611,12 @@ function desenharCover(ctx, img, x, y, w, h){
 function getTemplateCompartilhar(voto){
   if(voto?.tipo !== "cand") return "";
   return ({
-    "13": "lula_13.png",
-    "22": "flavio_22.png",
-    "30": "zema_30.png",
-    "55": "caiado_55.png",
-    "70": "augusto_70.png",
-    "14": "renan_14.png"
+    "13": "./lula_13.png?v=20260928c",
+    "22": "./flavio_22.png?v=20260928c",
+    "30": "./zema_30.png?v=20260928c",
+    "55": "./caiado_55.png?v=20260928c",
+    "70": "./augusto_70.png?v=20260928c",
+    "14": "./renan_14.png?v=20260928c"
   })[voto.c.numero] || "";
 }
 
